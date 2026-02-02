@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { scenarios } from "../data/scenarios";
 import ScenarioCard from "./ScenarioCard";
-import DiagnosisZone from "./DiagnosisZone";
-import IModeSelector from "./IModeSelector";
+import IModeWeb from "./IModeWeb";
 import FeedbackPanel from "./FeedbackPanel";
 import "./DiagnosisGame.css";
 
@@ -22,59 +21,21 @@ const DiagnosisGame: React.FC<DiagnosisGameProps> = ({ onComplete }) => {
   const [currentScenarioIndex, setCurrentScenarioIndex] = useState(0);
   const [selectedModes, setSelectedModes] = useState<string[]>([]);
   const [hasChecked, setHasChecked] = useState(false);
-  const [isDraggingOver, setIsDraggingOver] = useState(false);
   const [results, setResults] = useState<ScenarioResult[]>([]);
-  const [draggedMode, setDraggedMode] = useState<string | null>(null);
 
   const currentScenario = scenarios[currentScenarioIndex];
+  const correctModes = currentScenario.missingModes;
+  const isCorrect =
+    selectedModes.length === correctModes.length &&
+    correctModes.every((mode) => selectedModes.includes(mode));
+  const isPartiallyCorrect =
+    !isCorrect && selectedModes.some((mode) => correctModes.includes(mode));
 
-  const handleDragStart = (e: React.DragEvent<HTMLDivElement>, mode: string) => {
-    setDraggedMode(mode);
-    e.dataTransfer.effectAllowed = "move";
-  };
-
-  const handleDragEnd = (e: React.DragEvent<HTMLDivElement>) => {
-    setDraggedMode(null);
-    setIsDraggingOver(false);
-  };
-
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = "move";
-    setIsDraggingOver(true);
-  };
-
-  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
-    if (e.currentTarget === e.target) {
-      setIsDraggingOver(false);
-    }
-  };
-
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDraggingOver(false);
-
-    if (draggedMode) {
-      if (selectedModes.includes(draggedMode)) {
-        // Remove if already selected
-        setSelectedModes(selectedModes.filter((m) => m !== draggedMode));
-      } else {
-        // Add if not selected
-        setSelectedModes([...selectedModes, draggedMode]);
-      }
-    }
+  const handleModesChange = (modes: string[]) => {
+    setSelectedModes(modes);
   };
 
   const handleCheckAnswer = () => {
-    const correctModes = currentScenario.missingModes;
-    const isCorrect =
-      selectedModes.length === correctModes.length &&
-      correctModes.every((mode) => selectedModes.includes(mode));
-    const isPartiallyCorrect =
-      !isCorrect &&
-      selectedModes.some((mode) => correctModes.includes(mode));
-
     const result: ScenarioResult = {
       scenarioId: currentScenario.id,
       selectedModes,
@@ -97,13 +58,6 @@ const DiagnosisGame: React.FC<DiagnosisGameProps> = ({ onComplete }) => {
     }
   };
 
-  const correctModes = currentScenario.missingModes;
-  const isCorrect =
-    selectedModes.length === correctModes.length &&
-    correctModes.every((mode) => selectedModes.includes(mode));
-  const isPartiallyCorrect =
-    !isCorrect && selectedModes.some((mode) => correctModes.includes(mode));
-
   return (
     <div className="diagnosis-game">
       <div className="game-header">
@@ -124,7 +78,7 @@ const DiagnosisGame: React.FC<DiagnosisGameProps> = ({ onComplete }) => {
         </div>
       </div>
 
-      <div className="game-container">
+      <div className="game-main-content">
         <div className="game-left">
           <ScenarioCard
             scenario={currentScenario}
@@ -143,26 +97,11 @@ const DiagnosisGame: React.FC<DiagnosisGameProps> = ({ onComplete }) => {
         </div>
 
         <div className="game-center">
-          <DiagnosisZone
+          <h3 className="game-web-title">Drag modes to the center to lock them</h3>
+          <IModeWeb
             selectedModes={selectedModes}
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-            onDrop={handleDrop}
-            isDraggingOver={isDraggingOver}
-          />
-
-          {selectedModes.length > 0 && (
-            <div className="remove-hint">
-              Drag out to remove
-            </div>
-          )}
-        </div>
-
-        <div className="game-right">
-          <IModeSelector
-            selectedModes={selectedModes}
-            onDragStart={handleDragStart}
-            onDragEnd={handleDragEnd}
+            onModesChange={handleModesChange}
+            onLockStateChange={() => {}} // Lock state feedback not currently used
           />
         </div>
       </div>

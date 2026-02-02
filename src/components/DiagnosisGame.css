@@ -3,10 +3,11 @@
   padding: 2rem;
   display: flex;
   flex-direction: column;
+  gap: 2rem;
 }
 
 .game-header {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 .progress-container {
@@ -45,51 +46,45 @@
   background: #10b981;
 }
 
-.game-container {
+.game-main-content {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 2rem;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 3rem;
   flex: 1;
-  margin-bottom: 2rem;
-  max-width: 1400px;
-  margin-left: auto;
-  margin-right: auto;
+  max-width: 1600px;
+  margin: 0 auto;
   width: 100%;
 }
 
 .game-left {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 .game-center {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: relative;
+  gap: 1rem;
 }
 
-.remove-hint {
-  font-size: 0.75rem;
-  font-weight: 400;
-  letter-spacing: 0.02em;
-  color: #64748b;
-  margin-top: 1rem;
+.game-web-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #cbd5e1;
+  margin: 0;
+  padding: 0 1rem;
   text-align: center;
-}
-
-.game-right {
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .game-footer {
   display: flex;
   justify-content: center;
   gap: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(148, 163, 184, 0.1);
 }
 
 .check-button,
@@ -125,34 +120,27 @@
 }
 
 @media (max-width: 1200px) {
-  .game-container {
+  .game-main-content {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 2rem;
   }
 
-  .game-center {
-    order: 2;
-  }
-
-  .game-left {
-    order: 1;
-  }
-
-  .game-right {
-    order: 3;
+  .diagnosis-game {
+    padding: 1.5rem;
   }
 }
 
 @media (max-width: 768px) {
   .diagnosis-game {
     padding: 1rem;
+    gap: 1.5rem;
   }
 
-  .game-header {
-    margin-bottom: 1rem;
+  .game-main-content {
+    gap: 1.5rem;
   }
 
-  .game-container {
-    margin-bottom: 1rem;
+  .game-footer {
+    padding-top: 1rem;
   }
 }
