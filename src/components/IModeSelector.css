@@ -1,0 +1,59 @@
+.imode-selector {
+  animation: slideInRight 0.5s ease-out 0.1s both;
+}
+
+.modes-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  place-items: center;
+}
+
+.imode-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  position: relative;
+  user-select: none;
+}
+
+.imode-circle:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+}
+
+.imode-circle:active {
+  cursor: grabbing;
+}
+
+.imode-circle.selected {
+  opacity: 0.6;
+}
+
+.imode-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: #ffffff;
+  text-align: center;
+  text-transform: uppercase;
+  line-height: 1.2;
+  max-width: 100px;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
