@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Scenario, scenarios } from "../data/scenarios";
+import { scenarios } from "../data/scenarios";
 import ScenarioCard from "./ScenarioCard";
 import DiagnosisZone from "./DiagnosisZone";
 import IModeSelector from "./IModeSelector";
