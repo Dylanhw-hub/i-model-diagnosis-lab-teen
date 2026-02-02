@@ -4,15 +4,11 @@ import DiagnosisGame, { ScenarioResult } from "./components/DiagnosisGame";
 import CompletionScreen from "./components/CompletionScreen";
 import "./App.css";
 
-type GamePhase = "intro" | "playing" | "complete";
+type GamePhase = "playing" | "complete";
 
 function App() {
-  const [gamePhase, setGamePhase] = useState<GamePhase>("intro");
+  const [gamePhase, setGamePhase] = useState<GamePhase>("playing");
   const [results, setResults] = useState<ScenarioResult[]>([]);
-
-  const handleStartGame = () => {
-    setGamePhase("playing");
-  };
 
   const handleGameComplete = (finalResults: ScenarioResult[]) => {
     setResults(finalResults);
@@ -20,17 +16,25 @@ function App() {
   };
 
   const handleReset = () => {
-    setGamePhase("intro");
+    setGamePhase("playing");
     setResults([]);
   };
 
+  const content =
+    gamePhase === "playing" ? (
+      <DiagnosisGame onComplete={handleGameComplete} />
+    ) : (
+      <CompletionScreen results={results} onReset={handleReset} />
+    );
+
   return (
     <div className="app">
-      {gamePhase === "intro" && <OpeningDoors onOpen={handleStartGame} />}
-      {gamePhase === "playing" && <DiagnosisGame onComplete={handleGameComplete} />}
-      {gamePhase === "complete" && (
-        <CompletionScreen results={results} onReset={handleReset} />
-      )}
+      <OpeningDoors
+        title="I-Model Diagnosis Lab"
+        subtitle="Enter the I-Model"
+      >
+        {content}
+      </OpeningDoors>
     </div>
   );
 }
